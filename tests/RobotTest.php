@@ -25,10 +25,7 @@ class RobotTest extends MockeryTestCase
     public function testCleanUpForBatteryisDied(){
         $startAt = 1;
         $endAt = 3;
-        $reflection = new ReflectionClass($this->robot);
-        $reflection_property = $reflection->getProperty('capacity');
-        $reflection_property->setAccessible(true);
-        $reflection_property->setValue($this->robot, 100);
+        $this->robot->capacity = 100;
            
         $this->assertNotEquals($endAt, $this->robot->cleanUp($startAt, $endAt));
     }
@@ -36,12 +33,9 @@ class RobotTest extends MockeryTestCase
     public function testCleanUpForBatteryUsingMockery(){
         $startAt = 1;
         $endAt = 3;
-        $reflection = new ReflectionClass($this->robot);
-        $reflection_property = $reflection->getProperty('capacity');
-        $reflection_property->setAccessible(true);
-        $reflection_property->setValue($this->robot, 100);
+        $this->robot->capacity = 100;
 
-        $robotMock = Mockery::mock('robo');
+        $robotMock = Mockery::mock($this->robot);
         $robotMock->shouldReceive("cleanUp")
                   -> once()
                   -> with($startAt, $endAt)
