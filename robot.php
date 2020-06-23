@@ -18,7 +18,8 @@ try {
     // $var  = getopt(NULL, ["floor:","area:"]);
     // $floor = $var["floor"];
     // $area = $var["area"];
-    $robot = new Robot($action);
+    $battery = new Battery();
+    $robot = new Robot($action, $battery);
     if($floor == CARPET){
         $carpet = new Carpet($area, $robot);
         $carpet->calculateCleanUp();
