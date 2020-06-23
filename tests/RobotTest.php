@@ -1,31 +1,52 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class RobotTest extends TestCase
+class RobotTest extends MockeryTestCase
 {
+    function setUp(){
+        $this->robot = new Robot("clean", new Battery());
+        // Suppress  output to console
+        $this->setOutputCallback(function() {});
+    }
+    
     public function testChargeforBatteryFull(){
-        $robot = new Robot();
-        $this->assertEquals(NULL, $robot->charge());
+        $this->assertEquals(NULL, $this->robot->charge());
     }
 
     public function testCleanUpForBatteryNotDied(){
-        $robot = new Robot();
         $startAt = 1;
-        $endAt = 10;
-        $this->assertEquals($endAt, $robot->cleanUp($startAt, $endAt));
+        $endAt = 2;
+
+        $this->assertEquals($endAt, $this->robot->cleanUp($startAt, $endAt));
     }
 
     public function testCleanUpForBatteryisDied(){
-        $robot = new Robot();
         $startAt = 1;
-        $endAt = 100;
-        $reflection = new ReflectionClass($robot);
+        $endAt = 3;
+        $reflection = new ReflectionClass($this->robot);
         $reflection_property = $reflection->getProperty('capacity');
         $reflection_property->setAccessible(true);
-        $reflection_property->setValue($robot, 10);
-        $time = Clock::now();
+        $reflection_property->setValue($this->robot, 100);
            
-        $this->assertNotEquals($endAt, $robot->cleanUp($startAt, $endAt));
+        $this->assertNotEquals($endAt, $this->robot->cleanUp($startAt, $endAt));
+    }
+
+    public function testCleanUpForBatteryUsingMockery(){
+        $startAt = 1;
+        $endAt = 3;
+        $reflection = new ReflectionClass($this->robot);
+        $reflection_property = $reflection->getProperty('capacity');
+        $reflection_property->setAccessible(true);
+        $reflection_property->setValue($this->robot, 100);
+
+        $robotMock = Mockery::mock('robo');
+        $robotMock->shouldReceive("cleanUp")
+                  -> once()
+                  -> with($startAt, $endAt)
+                  -> andReturn(2);  
+           
+        $this->assertNotEquals($endAt, $robotMock->cleanUp($startAt, $endAt));
     }
 }
