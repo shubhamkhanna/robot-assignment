@@ -1,23 +1,23 @@
 <?php
 
 class Carpet implements Floor{
-    public $area;
-    public $robot;
+    private $area;
+    private $robot;
 
     function __construct($area, Robot $robot){
         $this->area = $area;
-        $this->robot  = $robot;
-        $robot->capacity = (100 / 30);
+        $this->robot = $robot;
+        $this->robot->setCapacity((100 / 30));
     }
-    
+ 
     function calculateCleanUp(){
-        echo "[action =". $this->robot->action ."]"." Carpet foor with area $this->area mt sq".PHP_EOL;
-        $this->robot->status = "cleaning";
+        echo "[action =". $this->robot->getAction() ."]"." Carpet foor with area $this->area mt sq".PHP_EOL;
+        $this->robot->setStatus("cleaning");
         $cleanedUpArea = $this->robot->cleanUp(1, $this->area);
         while($cleanedUpArea<$this->area){
-            $this->robot->status = "charging";
-            $this->robot->charge();
-            $this->robot->status = "cleaning";
+            $this->robot->setStatus("charging");
+            $this->robot->chargeMe();
+            $this->robot->setStatus("cleaning");
             $cleanedUpArea = $this->robot->cleanUp($cleanedUpArea, $this->area);
         }
         

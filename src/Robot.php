@@ -1,22 +1,33 @@
 <?php 
 
 class Robot {
-    private $battery;
-    public  $status;
-    public  $capacity;
-    public  $action;
+    private  $battery;
+    private  $status;
+    private  $action;
 
-    function __construct($action, Battery $battery){
+    function __construct($action){
         $this->action = $action;
-        $this->battery = $battery;
+        $this->battery = new Battery();
+    }
+
+    function getAction(): string{
+        return $this->action;
+    }
+
+    function setCapacity($capacity){
+        $this->battery->setConsumePower($capacity);
+    }
+
+    function setStatus($status){
+        $this->status = $status;
     }
 
     function cleanUp($startFloorAt, $endFloorAt) :int{
         for($i=$startFloorAt; $i<=$endFloorAt; $i++){
             sleep(1);
-            $this->battery->power = $this->battery->power-$this->capacity;
-            echo "<Robot is $this->status>... cleaned $i mt. sq. area  battery remaining = ". round($this->battery->power, 2)."%". PHP_EOL;
-            if((int)$this->battery->power == 0){
+            $this->battery->consume();
+            echo "<Robot is $this->status>... cleaned $i mt. sq. area  battery remaining = ". abs(round($this->battery->getPower(), 2))."%". PHP_EOL;
+            if((int)$this->battery->getPower() == 0){
                 echo "Battery died :(((((".PHP_EOL;
                 $endFloorAt = $i+1;
             break;
@@ -25,12 +36,7 @@ class Robot {
         return $endFloorAt;
     }
 
-    function charge() {
-        while(round($this->battery->power)<100){
-            sleep(1);
-            $this->battery->power += (100 / 30); 
-            echo "<Robot is $this->status the battery> ... completed = ". round($this->battery->power, 2)."%". PHP_EOL;
-        }
-        echo "Battery full :)))))". PHP_EOL;
+    function chargeMe(){
+        $this->battery->charge(); 
     }
 }

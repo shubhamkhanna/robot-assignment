@@ -18,14 +18,13 @@ try {
     // $var  = getopt(NULL, ["floor:","area:"]);
     // $floor = $var["floor"];
     // $area = $var["area"];
-    $battery = new Battery();
-    $robot = new Robot($action, $battery);
+    $robot = new Robot($action);
     if($floor == CARPET){
         $carpet = new Carpet($area, $robot);
         $carpet->calculateCleanUp();
     }elseif ($floor== HARD){
-        $hard = new Hard($area, $robot);
-        $hard->calculateCleanUp();
+        $carpet = new Hard($area, $robot);
+        $carpet->calculateCleanUp();
     }else{
         echo "Invalid Floor!!!".PHP_EOL;
     }
