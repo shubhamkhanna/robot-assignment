@@ -39,7 +39,7 @@ Battery died :(((((
 ........  
 Battery full :)))))  
 < Robot is cleaning >... cleaned 61 mt. sq. area  battery remaining = 98.33%  
-<Robot is cleaning >... cleaned 62 mt. sq. area  battery remaining = 96.67%  
+< Robot is cleaning >... cleaned 62 mt. sq. area  battery remaining = 96.67%  
 < Robot is cleaning >... cleaned 63 mt. sq. area  battery remaining = 95%  
 .........  
 Task done!!!  
